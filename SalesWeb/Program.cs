@@ -14,6 +14,7 @@ namespace SalesWeb
     {
         public static void Main(string[] args)
         {
+
             CreateWebHostBuilder(args).Build().Run();
         }
 
