@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SalesWeb.Models;
 using SalesWeb.Data;
+using SalesWeb.Services;
 
 namespace SalesWeb
 {
@@ -39,7 +40,7 @@ namespace SalesWeb
 
             services.AddDbContext<SalesWebContext>(options =>options.UseMySql(Configuration.GetConnectionString("SalesWebContext"), builder => builder.MigrationsAssembly("SalesWeb")));
             services.AddScoped<SeedingService>();
-        
+            services.AddScoped<SellerService>();
 
         }
 
