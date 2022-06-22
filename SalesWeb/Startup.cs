@@ -40,10 +40,11 @@ namespace SalesWeb
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddDbContext<SalesWebContext>(options =>options.UseMySql(Configuration.GetConnectionString("SalesWebContext"), builder => builder.MigrationsAssembly("SalesWeb")));
+            services.AddDbContext<SalesWebContext>(options => options.UseMySql(Configuration.GetConnectionString("SalesWebContext"), builder => builder.MigrationsAssembly("SalesWeb")));
             services.AddScoped<SeedingService>();
             services.AddScoped<SellerService>();
             services.AddScoped<DepartmentService>();
+            services.AddScoped<SalesRecordService>();
 
         }
 
@@ -53,10 +54,11 @@ namespace SalesWeb
             var enUS = new CultureInfo("en-US");
 
             var localizationOptions = new RequestLocalizationOptions
-            { DefaultRequestCulture = new RequestCulture(enUS), 
-                SupportedCultures = new List<CultureInfo> { enUS } ,
+            {
+                DefaultRequestCulture = new RequestCulture(enUS),
+                SupportedCultures = new List<CultureInfo> { enUS },
                 SupportedUICultures = new List<CultureInfo> { enUS }
-                                            };
+            };
 
             app.UseRequestLocalization(localizationOptions);
 
