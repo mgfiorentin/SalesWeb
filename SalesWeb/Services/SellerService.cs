@@ -37,9 +37,19 @@ namespace SalesWeb.Services
 
         public async Task RemoveAsync(int id)
         {
-            var obj = _context.Seller.Find(id);
-            _context.Seller.Remove(obj);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                var obj = _context.Seller.Find(id);
+                _context.Seller.Remove(obj);
+                await _context.SaveChangesAsync();
+            }
+
+            catch (DbUpdateException e)
+            {
+                throw new IntegrityExceeption(e.Message);
+
+            }
         }
 
         public async Task UpdateAsync(Seller obj)
@@ -55,7 +65,7 @@ namespace SalesWeb.Services
             }
             catch (DbConcurrencyException e)
             {
-                throw new DbConcurrencyException("DB concurrency, try later " +e.Message);
+                throw new DbConcurrencyException("DB concurrency, try later " + e.Message);
             }
         }
     }
