@@ -1,17 +1,24 @@
-﻿ using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using SalesWeb.Models.ViewModel;
+using SalesWeb.Models;
 using SalesWeb.Services;
 using System;
 using System.Threading.Tasks;
+using SalesWeb.Services.Exceptions;
+using SalesWeb.Models.ViewModels;
+using System.Diagnostics;
 
 namespace SalesWeb.Controllers
 {
     public class SalesRecordsController : Controller
     {
         private readonly SalesRecordService _salesRecordService;
+        private readonly DepartmentService _departmentService;
 
-        public SalesRecordsController(SalesRecordService salesRecordService)
+        public SalesRecordsController(SalesRecordService salesRecordService, DepartmentService departmentService)
         {
             _salesRecordService = salesRecordService;
+            _departmentService = departmentService;
         }
 
         public IActionResult Index()
@@ -22,7 +29,7 @@ namespace SalesWeb.Controllers
         public async Task<IActionResult> SimpleSearch(DateTime? minDate, DateTime? maxDate)
         {
 
-            if (!minDate.HasValue) minDate = new DateTime(DateTime.Now.Year,1, 1);
+            if (!minDate.HasValue) minDate = new DateTime(DateTime.Now.Year, 1, 1);
             if (!maxDate.HasValue) maxDate = DateTime.Now;
             var sales = await _salesRecordService.FindByDateAsync(minDate, maxDate);
 
@@ -42,7 +49,37 @@ namespace SalesWeb.Controllers
 
             return View(sales);
 
-            
         }
+
+        public IActionResult Create()
+        {
+
+            return View();
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(SalesRecord sr)
+        {
+            var obj = _salesRecordService.FindById(sr.Seller.Id);
+            if (obj == null) return RedirectToAction(nameof(Error), new { message = "Id not found" });
+
+            _salesRecordService.RegisterSale(sr);
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel { Message = message, RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier };
+            return View(viewModel);
+        }
+
+
+
+
+
     }
 }

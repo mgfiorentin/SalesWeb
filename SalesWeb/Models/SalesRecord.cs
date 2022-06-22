@@ -2,6 +2,7 @@
 using SalesWeb.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace SalesWeb.Models
 {
     public class SalesRecord

@@ -31,8 +31,6 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     <li><a asp-area="" asp-controller="Departments" asp-action="Index">Departments</a></li>
                     <li><a asp-area="" asp-controller="Sellers" asp-action="Index">Sellers</a></li>
                     <li><a asp-area="" asp-controller="SalesRecords" asp-action="Index">Sales</a></li>
@@ -45,10 +43,8 @@
 
     <partial name="_CookieConsentPartial" />
 
-
     <div class="container body-content">
         @RenderBody()
-
     </div>
 
     <footer style="position: relative;
@@ -57,7 +53,11 @@
             width: 100%;
             text-align: center;">
         <hr />
-        <p>&copy; 2022 - SalesWeb</p>
+        <p>
+            &copy; 2022 - SalesWeb -
+            <a asp-area="" asp-controller="Home" asp-action="About">About</a>
+        </p>
+
     </footer>
 
     <environment include="Development">

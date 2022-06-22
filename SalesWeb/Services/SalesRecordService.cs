@@ -58,6 +58,20 @@ namespace SalesWeb.Services
                 .GroupBy(x => x.Seller.Department)
                 .ToListAsync();
         }
+
+        public Seller FindById(int id)
+        {
+
+
+            return _context.Seller.FirstOrDefault(x => x.Id == id);
+        }
+
+        public void RegisterSale(SalesRecord sale)
+        {
+
+            _context.Add(sale);
+            _context.SaveChanges();
+        }
     }
 }
 
