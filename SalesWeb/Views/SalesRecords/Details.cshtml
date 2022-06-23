@@ -1,0 +1,52 @@
+﻿@model SalesWeb.Models.SalesRecord
+
+
+<h2>Sale ID #@Html.DisplayFor(model => model.Id)</h2>
+<hr />
+<h4>Details</h4>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            Seller's name
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Seller.Name)
+        </dd>
+
+        <dt>
+            Seller's department
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Seller.Department.Name)
+        </dd>
+
+        <dt>
+            Sale amount
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt>
+            Sale date
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            Sale status
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SaleStatus)
+        </dd>
+
+    </dl>
+</div>
+
+<div>
+ 
+    <a asp-action="Index" class="btn btn-primary">Back to search</a>
+
+</div>

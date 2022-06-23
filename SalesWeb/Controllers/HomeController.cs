@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SalesWeb.Models;
 using SalesWeb.Models.ViewModels;
+using SalesWeb.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,9 +12,20 @@ namespace SalesWeb.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+
+        private readonly SalesRecordService _salesRecordService;
+   
+
+        public HomeController(SalesRecordService salesRecordService)
         {
-            return View();
+            _salesRecordService = salesRecordService;
+                    }
+
+        public async Task<IActionResult> Index()
+        {
+            var lastSales = await _salesRecordService.FindLastTenAsync();
+
+            return View(lastSales);
         }
 
         public IActionResult About()

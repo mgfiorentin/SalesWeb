@@ -53,19 +53,27 @@ namespace SalesWeb.Controllers
 
         public IActionResult Create()
         {
-
             return View();
+        }
 
+        public IActionResult Details(int? id)
+        {
+            if (!id.HasValue) return RedirectToAction(nameof(Index));
+            var obj = _salesRecordService.FindSaleById(id.Value);
+
+            if (obj == null) return RedirectToAction(nameof(Error), new { message = "Sale ID was not found in the database." });
+
+            return View(obj);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(SalesRecord sr)
+        public async Task<IActionResult> Create(SalesRecord sr)
         {
             var obj = _salesRecordService.FindById(sr.Seller.Id);
-            if (obj == null) return RedirectToAction(nameof(Error), new { message = "Id not found" });
+            if (obj == null) return RedirectToAction(nameof(Error), new { message = "Seller ID was not found in the database." });
 
-            _salesRecordService.RegisterSale(sr);
+            await _salesRecordService.RegisterSaleAsync(sr);
 
             return RedirectToAction(nameof(Index));
 
@@ -76,6 +84,31 @@ namespace SalesWeb.Controllers
             var viewModel = new ErrorViewModel { Message = message, RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier };
             return View(viewModel);
         }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (!id.HasValue) return RedirectToAction(nameof(Index));
+            var obj = _salesRecordService.FindSaleById(id.Value);
+
+            if (obj == null) return RedirectToAction(nameof(Error), new { message = "Sale ID was not found in the database." });
+
+            return View(obj);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+           
+            var obj = _salesRecordService.FindSaleById(id);
+
+            if (obj == null) return RedirectToAction(nameof(Error), new { message = "Sale ID was not found in the database." });
+
+            _salesRecordService.RemoveSale(id);
+
+            return RedirectToAction(nameof(Index));
+
+       }
 
 
 

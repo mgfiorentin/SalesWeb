@@ -22,7 +22,6 @@ namespace SalesWeb.Controllers
         }
 
 
-
         public async Task<IActionResult> Index()
         {
             var list = await _sellerService.FindAllAsync();

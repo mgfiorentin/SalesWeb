@@ -16,6 +16,16 @@ namespace SalesWeb.Services
             _context = context;
         }
 
+        public async Task<List<SalesRecord>> FindLastTenAsync()
+        {
+
+            return await _context.SalesRecord.OrderByDescending(s => s.Date)
+                .Include(s=>s.Seller).Include(s=>s.Seller.Department)
+                .Include(s=>s.Seller).Include(s=>s.Seller.Department)
+                .Take(10).ToListAsync();
+
+        }
+
         public async Task<List<SalesRecord>> FindByDateAsync(DateTime? minDate, DateTime? maxDate)
         {
             var result = from obj in _context.SalesRecord select obj;
@@ -66,11 +76,25 @@ namespace SalesWeb.Services
             return _context.Seller.FirstOrDefault(x => x.Id == id);
         }
 
-        public void RegisterSale(SalesRecord sale)
+        public SalesRecord FindSaleById(int saleId)
+        {
+            return _context.SalesRecord.Include(x => x.Seller).Include(x => x.Seller.Department)
+                .FirstOrDefault(s => s.Id == saleId);
+        }
+
+        public async Task RegisterSaleAsync(SalesRecord sale)
         {
 
             _context.Add(sale);
+            await _context.SaveChangesAsync();
+        }
+
+        public void RemoveSale(int id)
+        {
+            var obj = _context.SalesRecord.Find(id);
+            _context.SalesRecord.Remove(obj);
             _context.SaveChanges();
+
         }
     }
 }
