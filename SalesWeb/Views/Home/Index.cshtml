@@ -10,8 +10,9 @@
 
 
 <div>
-    <button class="btn btn-primary">@Html.ActionLink("Create new seller","Create", "Sellers")</button>
-    <button class="btn btn-primary">@Html.ActionLink("Register new sale","Create", "SalesRecords")</button>
+    <a asp-controller="SalesRecords" asp-action="Create" class="btn btn-primary">Register a new sale</a>
+
+     <a asp-controller="Sellers" asp-action="Create" class="btn btn-default">Create a new seller</a>
 </div>
 
 <hr />
